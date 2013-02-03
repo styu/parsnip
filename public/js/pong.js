@@ -19,11 +19,15 @@ Player.prototype.movePaddle = function(yCoord) {
 
 
 var socket = io.connect(window.location.origin);
-var y = 0;
+var y1 = 0, y2 = 0;
 
 socket.on('controls', function (data) {
   console.log(data);
-  y = data["mouseY"];
+  if (data["playerNumber"] === 1) {
+    y1 = data["mouseY"];
+  } else if (data["playerNumber"] === 2) {
+    y2 = data["mouseY"];
+  }
 });
 //EaselJS Stage instance that wraps the Canvas element
 var stage;
@@ -53,24 +57,21 @@ function init()
 	//get a reference to the canvas element
 	var canvas = document.getElementById("gameBoard");
 
-	//copy the canvas bounds to the bounds instance.
-	//Note, if we resize the canvas, we need to reset
-	//these bounds.
-	bounds = new createjs.Rectangle();
-	bounds.width = canvas.width;
-	bounds.height = canvas.height;
-
 	//pass the canvas element to the EaselJS Stage instance
 	//The Stage class abstracts away the Canvas element and
 	//is the root level display container for display elements.
 	stage = new createjs.Stage(canvas);
 
-  var paddle = document.getElementById("player1");
-  var paddleDOMElement = new createjs.DOMElement(paddle);
-	player = new Player(paddleDOMElement);
+  var paddle1 = document.getElementById("player1"),
+      paddle2 = document.getElementById("player2"),
+      paddle1DOMElement = new createjs.DOMElement(paddle1),
+      paddle2DOMElement = new createjs.DOMElement(paddle2);
+	player1 = new Player(paddle1DOMElement);
+	player2 = new Player(paddle2DOMElement);
 
 	//add the paddle to the stage.
-  stage.addChild(paddleDOMElement);
+  stage.addChild(paddle1DOMElement);
+  stage.addChild(paddle2DOMElement);
 
 	//tell the stage to render to the canvas
 	stage.update();
@@ -86,6 +87,7 @@ function init()
 //function called by the Tick instance at a set interval
 function tick()
 {
-  player.movePaddle(y);
+  player1.movePaddle(y1);
+  player2.movePaddle(y2);
 	stage.update();
 }
