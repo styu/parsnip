@@ -1,3 +1,36 @@
+function calculateAngle(player, ball) {
+  return 2 * ((ball.ball.y - player.paddle.y) / 25.0);
+}
+
+/*
+ * Game class
+ */
+function Game(player1, player2, ball) {
+  this.player1 = player1;
+  this.player2 = player2;
+  this.ball = ball;
+}
+
+Game.prototype.makeMove = function(y1, y2) {
+  this.player1.movePaddle(y1);
+  this.player2.movePaddle(y2);
+  this.ball.moveBall();
+}
+
+Game.prototype.checkForCollision = function() {
+  if (this.player1.isTouching(this.ball)) {
+    if (this.ball.speedX < 0) {
+      this.ball.speedX *= -1;
+      this.ball.speedY = this.calculateAngle(this.player1, this.ball);
+    }
+  } else if (this.player2.isTouching(this.ball)) {
+    if (this.ball.speedX > 0) {
+      this.ball.speedX *= -1;
+      this.ball.speedY = this.calculateAngle(this.player2, this.ball);
+    }
+  }
+}
+
 /*
  * Player class
  */
@@ -86,16 +119,14 @@ Ball.prototype.moveBall = function() {
   }
 };
 
-function calculateAngle(player, ball) {
-  return 2 * ((ball.ball.y - player.paddle.y) / 25.0);
-}
 var socket = io.connect(window.location.origin);
 
 //EaselJS Stage instance that wraps the Canvas element
 var stage;
 var y1 = 0, y2 = 0,
     player1, player2,
-    pingpongball;
+    pingpongball,
+    game;
 
 socket.on('controls', function (data) {
   //console.log(data);
@@ -144,6 +175,7 @@ function init()
 	player1 = new Player(paddle1DOMElement, paddle1);
 	player2 = new Player(paddle2DOMElement, paddle2);
 	pingpongball = new Ball(ballDOMElement, ball);
+  game = new Game(player1, player2, pingpongball);
 
 	//add the paddles to the stage.
   stage.addChild(paddle1DOMElement);
@@ -164,19 +196,7 @@ function init()
 //function called by the Tick instance at a set interval
 function tick()
 {
-  player1.movePaddle(y1);
-  player2.movePaddle(y2);
-  pingpongball.moveBall();
-  if (player1.isTouching(pingpongball)) {
-    if (pingpongball.speedX < 0) {
-      pingpongball.speedX *= -1;
-      pingpongball.speedY = calculateAngle(player1, pingpongball);
-    }
-  } else if (player2.isTouching(pingpongball)) {
-    if (pingpongball.speedX > 0) {
-      pingpongball.speedX *= -1;
-      pingpongball.speedY = calculateAngle(player2, pingpongball);
-    }
-  }
+  game.makeMove(y1, y2);
+  game.checkForCollision();
 	stage.update();
 }
