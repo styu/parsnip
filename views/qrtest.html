@@ -1,20 +1,37 @@
-<script src="/socket.io/socket.io.js"></script>
-<script src="js/jquery-1.9.0.min.js"></script>
-<script src="js/util.js"></script>
+<html>
+<head>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/jquery-1.9.0.min.js"></script>
+  <script src="js/util.js"></script>
+  <div id="title"><h2>Scan a QR code to start your game!</h2></div>
 
-<div id="qr_code">
-</div>
+  <div id="qr_codes_container">
+    <div id="qr_code1" class="qr_code"></div>
+    <div id="qr_code2" class="qr_code"></div>
+  </div>
 
-<script>
-  var socket = io.connect(window.location.origin);
-  
-  socket.on('roomassignment', function(data) {
-    console.log(data);
-    var room = data["room"];    
-    var img1 = util_generate_qr_code("http://18.189.75.119:8080/m/" + room + "/1");  
-    var img2 = util_generate_qr_code("http://18.189.75.119:8080/m/" + room + "/2");
-    img1.appendTo("#qr_code");
-    img2.appendTo("#qr_code");
-  }
-</script>
+  <script>
+    var img1 = util_generate_qr_code("http://18.189.75.119:8080/m/1");  
+    var img2 = util_generate_qr_code("http://18.189.75.119:8080/m/2");
+    img1.appendTo("#qr_code1");
+    jQuery("<div class=\"player\">Player 1</div>").appendTo("#qr_code1");
+    img2.appendTo("#qr_code2");
+    jQuery("<div class=\"player\">Player 2</div>").appendTo("#qr_code2");
 
+    var socket = io.connect(window.location.origin);
+    
+    socket.on('roomassignment', function(data){
+      console.log(data);
+      var room = data["room"];    
+      var img1 = util_generate_qr_code("http://18.189.75.119:8080/m/" + room + "/1");  
+      var img2 = util_generate_qr_code("http://18.189.75.119:8080/m/" + room + "/2");
+      img1.appendTo("#qr_code1");
+      img2.appendTo("#qr_code2");
+    });
+  </script>
+
+</body>
+</html>

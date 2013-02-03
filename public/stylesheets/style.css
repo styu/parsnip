@@ -1,7 +1,39 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-image: url("../images/debut_dark.png");
 }
 a {
   color: #00b7ff;
+}
+
+div#title {
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:10px;
+  margin-bottom:40px;
+  text-align:center;
+  color:#c6c6a4;
+}
+
+div#qr_codes_container {
+  width:900px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+div#qr_code1 {
+  float:left;
+}
+
+div#qr_code2 {
+  float:right;
+}
+
+div.player {
+  margin-top:10px;
+  text-align:center;
+  font-weight:bold;
+  color:#c6c6a4;
 }
