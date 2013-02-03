@@ -1,6 +1,7 @@
   var socket = io.connect(window.location.origin);
   var timeStamp = (new Date()).getTime();
   var tokens = document.URL.split("/");
+  var room = -1;
   var playerNumber = -1;
   var interval = -1;
   
@@ -31,14 +32,19 @@
   }
   
   socket.on('connect', function() {
-    interval = setInterval(transmitdata,15);
+    playerNumber = parseInt(tokens[tokens.length-1]);
+    room = parseInt(tokens[tokens.length-2]);
+    socket.emit('handshake', { page: "mobile", room: room, playerNumber: playerNumber });
+    
   });
   socket.on('disconnect', function() {
-    clearInterval(interval);
+    if (interval !== -1) {
+      clearInterval(interval);
+    }
   });
   
   socket.on('handshake', function (data) {
-    playerNumber = parseInt(tokens[tokens.length-1]);
+    interval = setInterval(transmitdata,15);
     $("#playerNum").text(playerNumber);
   });
   

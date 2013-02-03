@@ -11,6 +11,7 @@ app.beginMsg = {};
 // How many players have connected
 app.connectedPlayers = 0;
 app.roomNumber = 0;
+app.roomData = new Array();
 app.playerSockets = new Array();
 
 function parsnip() {
@@ -40,7 +41,11 @@ function parsnip() {
   
   app.get('/mouse', function(req, res) {
     app.roomNumber++;
-    res.render('mousetest');
+    res.render('mousetest_requestroom');
+  });
+  
+  app.get('/mouse/lobby/:room', function(req, res) {
+    res.render('mousetest_lobby');
   });
   
   app.get('/mouse/:room', function(req, res) {
@@ -72,32 +77,56 @@ function parsnip() {
     app.io.sockets.on('connection', function(socket) {
       app.connectedPlayers++;
       
+      var playerSockets = app.playerSockets;
+      var roomData = app.roomData;
+      
       socket.on('handshake', function (data){
         // This should actually check whether or not the room is valid, but whatever.
         if (data.page === "lobby") {
           if (data.game === "pong") {
             playerSockets[data.room] = new Array();
+            roomData[data.room] = { socket: socket, game: "pong", numPlayers: 2 };
+            console.log(roomData);
+            socket.join("room" + data.room);
             socket.emit('handshake', { numberControllers: 2 });
           }
         } else if (data.page === "mobile") {
-          if (playerSockets[data.room][data.playerNumber] !== undefined) {
-            playerSockets[data.room][data.playerNumber].disconnect();
+          if (roomData[data.room] !== undefined) {
+            if (playerSockets[data.room][data.playerNumber] !== undefined) {
+              playerSockets[data.room][data.playerNumber].disconnect();
+            }
+            playerSockets[data.room][data.playerNumber] = socket;
+            socket.join("room" + data.room);
+            socket.emit('handshake', { hello: "world" });
+            
+            socket.on('controller', (function(num) {
+              return function(data){
+                app.roomData[num].socket.emit('controls', data);
+              };
+            })(data.room));
+            
+            var allConnected = true;
+            for (var i = 1; i <= roomData[data.room].numPlayers; ++i) {
+              if (playerSockets[data.room][i] === undefined) {
+                allConnected = false;
+                break;
+              }
+            }
+            if (allConnected) {
+              roomData[data.room].socket.emit('playersready', { hello: "world" });
+            }
+          } else {
+            socket.disconnect();
           }
-          playerSockets[data.room][data.playerNumber] = socket;
-          
         } else if (data.page === "screen") {
-          //
+          roomData[data.room].socket = socket;
+          socket.join("room" + data.room);
         }
         
       });
       
       socket.on('requestroom', function (data){
         socket.emit('assignroom', { room: app.roomNumber })
-      });
-      
-      socket.on('controller', function(data){
-        //console.log(data);
-        socket.broadcast.emit('controls', data);
       });
       
     });
