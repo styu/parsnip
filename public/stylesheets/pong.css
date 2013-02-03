@@ -3,9 +3,25 @@ body, html {
   margin: 0;
   padding: 0;
   width: 100%;
+  background-image: url("../images/debut_dark.png");
+}
+#header{
+}
+h1{
+  color: #ffffff;
+  font-family: "Raleway", serif;
+  font-size: 100px;
+  text-align: center;
+}
+h2{
+  
 }
 .board {
-  background: black;
   width: 100%;
   height: 100%;
+}
+.paddle {
+  width: 10px;
+  height: 60px;
+  background-color: #ffffff;
 }
