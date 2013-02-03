@@ -4,7 +4,8 @@
 <script type='text/javascript'>
 	var tokens = document.URL.split("/");
   var room = parseInt(tokens[tokens.length-1]);
-	
+  var socket = io.connect(window.location.origin);
+  
 	socket.on('connect', function() {
     socket.emit('handshake', { room: room, page: "screen" });
   });
@@ -13,7 +14,6 @@
     h = $(document).height();
     w = $(document).width();
   });
-  var socket = io.connect(window.location.origin);
   var finalY = 0;
   var finalX = 0;
 	
