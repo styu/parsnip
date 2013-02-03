@@ -1,11 +1,12 @@
 {
-  "name": "parsnip",
+  "name": "pjparsnip",
   "version": "0.0.1-13",
   "description": "snip snip",
   "keywords": [
-    "text",
-    "adventure",
-    "game"
+    "phone",
+    "accelerometer",
+    "multiuser",
+    "has-nothing-to-do-with-cake"
   ],
   "contributors": [
     "Norman Cao <normandy@mit.edu>",
