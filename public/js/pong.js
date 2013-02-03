@@ -21,12 +21,12 @@ Game.prototype.checkForCollision = function() {
   if (this.player1.isTouching(this.ball)) {
     if (this.ball.speedX < 0) {
       this.ball.speedX *= -1;
-      this.ball.speedY = this.calculateAngle(this.player1, this.ball);
+      this.ball.speedY = calculateAngle(this.player1, this.ball);
     }
   } else if (this.player2.isTouching(this.ball)) {
     if (this.ball.speedX > 0) {
       this.ball.speedX *= -1;
-      this.ball.speedY = this.calculateAngle(this.player2, this.ball);
+      this.ball.speedY = calculateAngle(this.player2, this.ball);
     }
   }
 }
@@ -59,7 +59,14 @@ Player.prototype.calibrate = function(yCoord) {
  * beforehand
  */
 Player.prototype.movePaddle = function(yCoord) {
-  this.paddle.y = yCoord;
+  if (yCoord <= 0) {
+    this.paddle.y = 0;
+  } else if (yCoord >= $(document).height() - 120) {
+    console.log('too down' + yCoord);
+    this.paddle.y = $(document).height() - this.height;
+  } else {
+    this.paddle.y = yCoord;
+  }
 };
 
 /*
@@ -84,8 +91,9 @@ Player.prototype.isTouching = function(pingpongball) {
 function Ball(ball, element) {
   this.ball = ball;
   this.angle;
-  this.defaultSpeedX = -3;
-  this.defaultSpeedY = -2;
+  this.scale = 150;
+  this.defaultSpeedX = -$(window).width() / this.scale;
+  this.defaultSpeedY = -$(window).height() / this.scale;
   this.speedX = this.defaultSpeedX;
   this.speedY = this.defaultSpeedY;
   this.element = element;
@@ -123,6 +131,8 @@ var socket = io.connect(window.location.origin);
 
 //EaselJS Stage instance that wraps the Canvas element
 var stage;
+var h = $(window).height(),
+    w = $(window).width();
 var y1 = 0, y2 = 0,
     player1, player2,
     pingpongball,
@@ -138,12 +148,14 @@ var y1 = 0, y2 = 0,
 socket.on('controls', function (data) {
   //console.log(data);
   if (data["playerNumber"] === 1) {
-    y1 = data["agY"];
+    //y1 = data["agY"];
+    y1 = h * ((data["agY"] + 5) / 10);
     if (!player1.calibrated) {
       player1.calibrate(y1);
     }
   } else if (data["playerNumber"] === 2) {
-    y2 = data["agY"];
+    //y2 = data["agY"];
+    y2 = h * ((data["agY"] + 5) / 10);
     if (!player2.calibrated) {
       player2.calibrate(y2);
     }

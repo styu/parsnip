@@ -1,6 +1,7 @@
 <html>
 <head>
   <title>Lobby</title>
+  <link rel="stylesheet" href="/stylesheets/reset.css">
   <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 
@@ -8,8 +9,8 @@
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/jquery-1.9.0.min.js"></script>
   <script src="/js/util.js"></script>
-
-  <div id="title"><h2>Scan a QR code to start your game!</h2></div>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+  <div id="title"><h2>Scan a QR code to Start</h2></div>
   <div id="qr_codes_container">
   </div>
 
@@ -30,10 +31,10 @@
     // sites.
     socket.on('handshake', function (data) {
       for (var i = 1; i <= data.numberControllers; i++) {
-        jQuery("<div id=\"qr_code" + i + "\" class=\"qr_code\"></div>").appendTo("#qr_codes_container");
+        $("<div id=\"qr_code" + i + "\" class=\"qr_code\"></div>").appendTo("#qr_codes_container");
         util_generate_qr_code(window.location.origin + "/m/" + data.room + "/" + i).appendTo("#qr_code" + i);
-        jQuery("<div class=\"player\">Player " + i + " (" + window.location.origin + "/m/" + data.room
-               + "/" + i + ")</div>").appendTo("#qr_code" + i);
+        $("<div class=\"player\"><h3>Player " + i + "</h3><h4> " + window.location.origin + "/m/" + data.room
+               + "/" + i + "</h4></div>").appendTo("#qr_code" + i);
       }
     });
     
