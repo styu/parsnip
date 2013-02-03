@@ -25,11 +25,11 @@
   <script src="/socket.io/socket.io.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
   <script>
-    var socket = io.connect('http://localhost');
-    
+    var socket = io.connect(window.location.origin);
+    var x = 0;
     socket.on('controls', function (data) {
       console.log(data);
-      $("#hello").text(data["accelX"]);
+      x = data["accelX"];
     });
     
   </script>
@@ -135,15 +135,9 @@
 		{
 			//check and see if the Shape has gone of the right
 			//of the stage.
-			if(rectangle.y > bounds.width)
-			{
-				//if it has, reset it.
-				rectangle.y = rectangleYReset;
+			if(rectangle.y + x <= bounds.width) {
+			  rectangle.y += x;
 			}
- 
-			//move the paddle over 10 pixels
-			rectangle.y += 8;
- 
 			//re-render the stage
 			stage.update();
 		}
