@@ -1,0 +1,64 @@
+<script src="/socket.io/socket.io.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script>
+  var socket = io.connect(window.location.origin);
+  
+  var tokens = document.URL.split("/");
+  var room = parseInt(tokens[tokens.length-1]);
+	
+	socket.on('connect', function() {
+    socket.emit('handshake', { room: room, page: "screen" });
+  });
+  
+  var startThrowTimestep = -1;
+  var totalThrownTime = -1;
+  var thrown = false;
+  var updateInterval = -1;
+  var bestHeight = 0;
+  var myStart = -1;
+  
+  var updateTime = function() {
+    $("#airtime").text("" + ((new Date()).getTime() - myStart));
+  };
+  
+  socket.on('controls', function (data) {
+    if (data.playerNumber == 1) {
+      if (data.accelX !== undefined) {
+        var accelSq = data.accelX*data.accelX + data.accelY*data.accelY + data.accelZ*data.accelZ;
+        $("#acsq").text("" + accelSq);
+        
+        
+        if (thrown && accelSq < 25.0) {
+          totalThrownTime = data.timeStamp - startThrowTimestep;
+          thrown = false;
+          clearInterval(updateInterval);
+          if (totalThrownTime > 500) {
+            var height = totalThrownTime / 2500.0;
+            height = 9.8 * height * height / 2.0;
+            if (height > bestHeight) {
+              bestHeight = height;
+              $("#maxheight").text("" + parseInt(bestHeight*100.0)/100.0);
+              if (bestHeight < 6.0) {
+                $("#pansy").text("Pansy.");
+              } else if (bestHeight > 9.0) {
+                $("#pansy").text("You fancy. Bro.");
+              } else {
+                $("#pansy").text("Not bad. For a pansy.");
+              }
+            }
+          }
+        } else if (!thrown && accelSq > 25.0) {
+          thrown = true;
+          startThrowTimestep = data.timeStamp;
+          myStart = (new Date()).getTime();
+          updateInterval = setInterval(updateTime, 15);
+        }
+        
+      }
+    }
+  });
+  
+</script>
+
+Current airtime is <span id="airtime">0</span> ms.<br/>
+Best score is <span id="maxheight">0</span> m. <span id="pansy">Pansy.</span>
