@@ -83,13 +83,18 @@ function parsnip() {
       socket.on('handshake', function (data){
         // This should actually check whether or not the room is valid, but whatever.
         if (data.page === "lobby") {
+          var numPlayers = 0;
           if (data.game === "pong") {
-            playerSockets[data.room] = new Array();
-            roomData[data.room] = { socket: socket, game: "pong", numPlayers: 2 };
-            console.log(roomData);
-            socket.join("room" + data.room);
-            socket.emit('handshake', { numberControllers: 2 });
+            numPlayers = 2;
+          } else if (data.game === "mouse") {
+            numPlayers = 1;
           }
+          
+          playerSockets[data.room] = new Array();
+          roomData[data.room] = { socket: socket, game: data.game, numPlayers: numPlayers };
+          console.log(roomData);
+          socket.join("room" + data.room);
+          socket.emit('handshake', { numberControllers: numPlayers });
         } else if (data.page === "mobile") {
           if (roomData[data.room] !== undefined) {
             if (playerSockets[data.room][data.playerNumber] !== undefined) {
@@ -101,6 +106,7 @@ function parsnip() {
             
             socket.on('controller', (function(num) {
               return function(data){
+                console.log(data);
                 app.roomData[num].socket.emit('controls', data);
               };
             })(data.room));
@@ -119,8 +125,13 @@ function parsnip() {
             socket.disconnect();
           }
         } else if (data.page === "screen") {
-          roomData[data.room].socket = socket;
-          socket.join("room" + data.room);
+          if (roomData[data.room] !== undefined) {
+            roomData[data.room].socket = socket;
+            socket.join("room" + data.room);
+            socket.emit('handshake', { hello: "world" });
+          } else {
+            socket.disconnect();
+          }
         }
         
       });

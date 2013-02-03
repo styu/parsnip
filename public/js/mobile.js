@@ -7,6 +7,7 @@
   
   var ondevicemotion_event = {};
   var onmousemove_event = {};
+  var odm_velocity = { x:0, y:0, z:0 };
   
   transmitdata = function(){
     // Wait until player number has been recieved
@@ -35,12 +36,12 @@
     playerNumber = parseInt(tokens[tokens.length-1]);
     room = parseInt(tokens[tokens.length-2]);
     socket.emit('handshake', { page: "mobile", room: room, playerNumber: playerNumber });
-    
   });
   socket.on('disconnect', function() {
     if (interval !== -1) {
       clearInterval(interval);
     }
+    $("#playerNum").text("?");
   });
   
   socket.on('handshake', function (data) {
@@ -50,7 +51,7 @@
   
   
 
-  window.ondevicemotion = function(event) {  
+  window.ondevicemotion = function(event) {
     ondevicemotion_event = event;
   }
   
