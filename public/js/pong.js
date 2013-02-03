@@ -8,19 +8,19 @@ function calculateAngleX(player, ball) {
 /*
  * Game class
  */
-function Game(player1, player2, player3, player4, ball) {
-  this.player1 = player1;
-  this.player2 = player2;
-  this.player3 = player3;
-  this.player4 = player4;
+function Game(players, ball) {
+  this.players = players;
   this.ball = ball;
 }
 
-Game.prototype.makeMove = function(y1, y2, x3, x4) {
-  this.player1.movePaddleY(y1);
-  this.player2.movePaddleY(y2);
-  this.player3.movePaddleX(x3);
-  this.player4.movePaddleX(x4);
+Game.prototype.makeMove = function(values) {
+  for (var i = 0; i < players.length; i++) {
+    if (i < 2) {
+      this.player[i].movePaddleY(values[i]);
+    } else {
+      this.player[i].movePaddleX(values[i]);
+    }
+  }
   this.ball.moveBall();
 }
 
@@ -172,7 +172,7 @@ var socket = io.connect(window.location.origin);
 var stage;
 var h = $(window).height(),
     w = $(window).width();
-var y1 = 0, y2 = 0, y3 = 0, y4 = 0,
+var values = new Array(),
     player1, player2, player3, player4,
     pingpongball,
     game;
@@ -185,20 +185,69 @@ var y1 = 0, y2 = 0, y3 = 0, y4 = 0,
   });
 		
 socket.on('controls', function (data) {
-  //console.log(data);
   if (data["playerNumber"] === 1) {
-    y1 = h * ((data["agY"] + 5) / 10);
+    values[0] = h * ((data["agY"] + 5) / 10);
   } else if (data["playerNumber"] === 2) {
-    y2 = h * ((data["agY"] + 5) / 10);
+    values[1] = h * ((data["agY"] + 5) / 10);
   } else if (data["playerNumber"] === 3) {
-    y3 = w * ((data["agX"] + 5) / 10);
+    values[2] = w * ((data["agX"] + 5) / 10);
   } else if (data["playerNumber"] === 4) {
-    y4 = w * ((data["agX"] + 5) / 10);
+    values[3] = w * ((data["agX"] + 5) / 10);
   }
 });
 
-//initialize function, called when page loads.
 function init()
+{
+	//check and see if the canvas element is supported in
+	//the current browser
+	//http://diveintohtml5.org/detect.html#canvas
+	if(!(!!document.createElement('canvas').getContext))
+	{
+		var wrapper = document.getElementById("canvasWrapper");
+		wrapper.innerHTML = "Your browser does not appear to support " +
+		"the HTML5 Canvas element";
+		return;
+	}
+
+	//get a reference to the canvas element
+	var canvas = document.getElementById("gameBoard");
+
+	//pass the canvas element to the EaselJS Stage instance
+	//The Stage class abstracts away the Canvas element and
+	//is the root level display container for display elements.
+	stage = new createjs.Stage(canvas);
+
+  var paddle1 = document.getElementById("player1"),
+      paddle2 = document.getElementById("player2"),
+      ball = document.getElementById("ball"),
+      paddle1DOMElement = new createjs.DOMElement(paddle1),
+      paddle2DOMElement = new createjs.DOMElement(paddle2),
+      ballDOMElement = new createjs.DOMElement(ball);
+
+	player1 = new Player(paddle1DOMElement, paddle1);
+	player2 = new Player(paddle2DOMElement, paddle2);
+	var players = [player1, player2];
+	pingpongball = new Ball(ballDOMElement, ball);
+  game = new Game(players, pingpongball);
+
+	//add the paddles to the stage.
+  stage.addChild(paddle1DOMElement);
+  stage.addChild(paddle2DOMElement);
+  stage.addChild(ballDOMElement);
+
+	//tell the stage to render to the canvas
+	stage.update();
+
+	createjs.Ticker.setFPS(60);
+
+	//Subscribe to the Tick class. This will call the tick
+	//method at a set interval (similar to ENTER_FRAME with
+	//the Flash Player)
+	createjs.Ticker.addListener(this);
+}
+
+//initialize function, called when page loads.
+function init4()
 {
 	//check and see if the canvas element is supported in
 	//the current browser
@@ -234,8 +283,9 @@ function init()
 	player2 = new Player(paddle2DOMElement, paddle2);
 	player3 = new Player(paddle3DOMElement, paddle3);
 	player4 = new Player(paddle4DOMElement, paddle4);
+	var players = [player1, player2, player3, player4];
 	pingpongball = new Ball(ballDOMElement, ball);
-  game = new Game(player1, player2, pingpongball);
+  game = new Game(players, pingpongball);
 
 	//add the paddles to the stage.
   stage.addChild(paddle1DOMElement);
@@ -258,8 +308,10 @@ function init()
 //function called by the Tick instance at a set interval
 function tick()
 {
-  game.makeMove(y1, y2, y3, y4);
+  game.makeMove(values);
   game.checkForCollisionY();
-  game.checkForCollisionX();
+  if (game.players.length > 2) {
+    game.checkForCollisionX();
+  }
 	stage.update();
 }
