@@ -26,29 +26,19 @@ Player.prototype.calibrate = function(yCoord) {
  * beforehand
  */
 Player.prototype.movePaddle = function(yCoord) {
-  var newY = (yCoord - this.middleY),
-      halfWindowHeight = $(window).height() / 2;
-  // Makes sure the paddle doesn't go beyond the border of the
-  // game
-  if (newY < - halfWindowHeight + this.midHeight) {
-    this.paddle.y = - halfWindowHeight + this.midHeight;
-  } else if (newY + this.height > halfWindowHeight) {
-    this.paddle.y = halfWindowHeight - this.midHeight;
-  } else {
-    this.paddle.y = newY;
-  }
+  this.paddle.y = yCoord;
 };
 
 /*
  * Returns true if the given object is touching the player
  */
 Player.prototype.isTouching = function(pingpongball) {
-  if (pingpongball.ball.x <= pingpongball.radius - $(window).width() / 2 + this.paddle.x + this.element.style.width){
-    if (pingpongball.ball.y <= this.paddle.y + this.element.style.height || pingpongball.ball.y + pingpongball.element.style.height >= this.paddle.y) {
+  if (pingpongball.ball.x <= pingpongball.radius - $(window).width() / 2 + 65){
+    if (pingpongball.ball.y > this.paddle.y && pingpongball.ball.y < (this.paddle.y + 120)){
       return true;
     }
-  } else if (pingpongball.ball.x >= $(window).width() / 2 - pingpongball.radius - this.element.style.width) { 
-    if (pingpongball.ball.y <= this.paddle.y + this.element.style.height || pingpongball.ball.y + pingpongball.element.style.height >= this.paddle.y) {
+  } else if (pingpongball.ball.x >= $(window).width() / 2 - pingpongball.radius - 65) {
+    if (pingpongball.ball.y > this.paddle.y && pingpongball.ball.y < (this.paddle.y + 120)){
       return true;
     }
   }
@@ -61,8 +51,10 @@ Player.prototype.isTouching = function(pingpongball) {
 function Ball(ball, element) {
   this.ball = ball;
   this.angle;
-  this.speedX = -3;
-  this.speedY = -2;
+  this.defaultSpeedX = -3;
+  this.defaultSpeedY = -2;
+  this.speedX = this.defaultSpeedX;
+  this.speedY = this.defaultSpeedY;
   this.element = element;
   this.radius = this.element.style.height / 2;
 }
@@ -72,26 +64,30 @@ Ball.prototype.moveBall = function() {
   this.ball.y += this.speedY;
 
   //first check the left and right boundaries
-  if (this.ball.x <= this.radius - $(window).width() / 2){
-    this.ball.x = this.radius - $(window).width() / 2;
-    this.speedX *= -1;
-  } else if (this.ball.x >= $(window).width() / 2 - this.radius) { 
-    this.ball.x = $(window).width() / 2 - this.radius;
-    this.speedX *= -1;
+  if (this.ball.x <= - $(window).width() / 2){
+    this.ball.x = 0;
+    this.ball.y = 0;
+    this.speedX = this.defaultSpeedX;
+    this.speedY = this.defaultSpeedY;
+  } else if (this.ball.x >= $(window).width() / 2) { 
+    this.ball.x = 0;
+    this.ball.y = 0;
+    this.speedX = this.defaultSpeedX;
+    this.speedY = this.defaultSpeedY;
   }
 
   //now we do the same with the top and bottom of the screen
-  if (this.ball.y <= this.radius - $(window).height() / 2){
-    this.ball.y = this.radius - $(window).height() / 2;
+  if (this.ball.y <= 0){
+    this.ball.y = 0;
     this.speedY *= -1;
-  } else if (this.ball.y >= $(window).height() / 2 - this.radius) {
-    this.ball.y = $(window).height() / 2 - this.radius;
+  } else if (this.ball.y >= $(window).height() - this.element.style.height) {
+    this.ball.y = $(window).height() - this.element.style.height;
     this.speedY *= -1;
   }
 };
 
 function calculateAngle(player, ball) {
-  return 5 * ((ball.ball.y - player.paddle.y) / 25);
+  return 2 * ((ball.ball.y - player.paddle.y) / 25.0);
 }
 var socket = io.connect(window.location.origin);
 
@@ -102,7 +98,7 @@ var y1 = 0, y2 = 0,
     pingpongball;
 
 socket.on('controls', function (data) {
-  console.log(data);
+  //console.log(data);
   if (data["playerNumber"] === 1) {
     y1 = data["mouseY"];
     if (!player1.calibrated) {
@@ -173,7 +169,6 @@ function tick()
   pingpongball.moveBall();
   if (player1.isTouching(pingpongball)) {
     if (pingpongball.speedX < 0) {
-      console.log('HELLO');
       pingpongball.speedX *= -1;
       pingpongball.speedY = calculateAngle(player1, pingpongball);
     }
