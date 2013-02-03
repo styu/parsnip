@@ -20,23 +20,23 @@ function parsnip() {
     app.set('view engine', 'html');
   });
   
-  app.get('/', function(req, res) {
-    res.render('index');
-  });
+  //app.get('/', function(req, res) {
+  //  res.render('index');
+  //});
   
   app.get('/pong', function(req, res) {
     res.render('pong');
   });
   
-  app.get('/m', function(req, res) {
-    res.render('mobile');
-  });
+  //app.get('/m', function(req, res) {
+  //  res.render('mobile');
+  //});
   
-  app.get('/mouse', function(req, res) {
+  app.get('/', function(req, res) {
     res.render('mousetest');
   });
   
-  app.get('/m/mouse/:num', function(req, res) {
+  app.get('/m/:num', function(req, res) {
     console.log("player " + req.params.num + "connected");
     res.render('mousetest_mobile');
   });
