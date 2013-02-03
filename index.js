@@ -23,9 +23,9 @@ function parsnip() {
     app.set('view engine', 'html');
   });
   
-  //app.get('/', function(req, res) {
-  //  res.render('index');
-  //});
+  app.get('/', function(req, res) {
+    res.render('index');
+  });
   
   app.get('/m/:room/:num', function(req, res) {
     res.render('mobile');
