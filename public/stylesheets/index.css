@@ -61,6 +61,13 @@ filter: dropshadow(color=#000, offx=1, offy=1);
         
         box-shadow:   1px 4px 1px rgba(0, 0, 0, 0.3);
 }
+a{
+  color: #222222;
+  text-decoration: none;
+}
+a:hover{
+  opacity: 0.6;
+}
 h3{
   color: #000000;
  font-family: 'Open Sans',sans-serif;
