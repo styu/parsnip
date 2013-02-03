@@ -1,6 +1,6 @@
 {
   "name": "parsnip",
-  "version": "0.0.1",
+  "version": "0.0.1-2",
   "description": "snip snip",
   "keywords": [
     "text",
@@ -8,8 +8,10 @@
     "game"
   ],
   "contributors": [
+    "Norman Cao <normandy@mit.edu>",
     "Victor Hung <vhung@mit.edu>",
-    "x"
+    "Qian Long <qlong@mit.edu>",
+    "Stephanie Yu <styu@mit.edu>"
   ],
   "repository": {
     "type": "git",
@@ -31,5 +33,5 @@
   "scripts": {
     "start": "example/app.js"
   },
-  "subdomain": "example.app.js"
+  "subdomain": "parsnip"
 }
