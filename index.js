@@ -54,7 +54,7 @@ function parsnip() {
         if (data.page === "lobby") {
           var numPlayers = 0;
           if (data.game === "pong") {
-            numPlayers = 2;
+            numPlayers = 4;
           } else {
             numPlayers = 1;
           }
