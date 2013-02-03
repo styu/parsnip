@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+ 
+	<title>Pong</title>
+
+	<!-- STYLESHEETS -->
+	<link rel="stylesheet" href="/stylesheets/reset.css">
+	<link rel="stylesheet" href="/stylesheets/pong.css">
+ 
+	<!-- FONTS -->
+	<link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+		
+	<!-- JAVASCRIPT -->
+	<script src="/js/easeljs-0.5.0.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+	<script src="/js/pong.js"></script>
+</head>
+<body onload="init4()">
+	<div id="header">
+		<h2>ADVANCED</h2>
+		<h1>PONG</h1>
+	</div>
+	<div id="canvasWrapper">
+		<div class='paddle' id='player1'></div>
+		<div class='paddle' id='player2'></div>
+		<div class='paddle-sideways' id='player3'></div>
+		<div class='paddle-sideways' id='player4'></div>
+		<div id='ball'></div>
+		<canvas class='board' id="gameBoard">
+		</canvas>
+	</div>
+	<div id="footer">
+		powered by parsnip <span class='dot'></span> made for hackMIT
+	</div>
+</body>
+</html>

@@ -43,6 +43,15 @@ h2{  text-shadow: 0px 1px 1px #444444;
   -webkit-box-shadow:  2px 2px 5px 1px rgba(0, 0, 0, 0.3);
   box-shadow:  2px 2px 5px 1px rgba(0, 0, 0, 0.3);
 }
+.paddle-sideways {
+  width: 120px;
+  height: 20px;
+  background-color: rgba(255,255,255,0.9);
+  position: fixed;
+  border: 1px #999999 solid;
+  -webkit-box-shadow:  2px 2px 5px 1px rgba(0, 0, 0, 0.3);
+  box-shadow:  2px 2px 5px 1px rgba(0, 0, 0, 0.3);
+}
 #player1{
   left: 20px;
   /* top: -webkit-calc(50% - 60px); */
@@ -50,6 +59,12 @@ h2{  text-shadow: 0px 1px 1px #444444;
 #player2{
   right: 20px;
   /* top: -webkit-calc(50% - 60px); */
+}
+#player3{
+  top: 20px;
+}
+#player4{
+  bottom: 20px;
 }
 #ball{
   border-radius: 50%;
