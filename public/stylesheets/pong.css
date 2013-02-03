@@ -71,6 +71,9 @@ h2{  text-shadow: 0px 1px 1px #444444;
   top: -webkit-calc(50% - 10px);
   left: -webkit-calc(50% - 10px);
 }
+#canvasWrapper {
+  height: 100%;
+}
 .dot{
   width: 6px;
   height: 6px;
