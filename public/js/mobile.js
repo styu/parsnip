@@ -2,6 +2,7 @@
   var timeStamp = (new Date()).getTime();
   var tokens = document.URL.split("/");
   var playerNumber = -1;
+  var interval = -1;
   
   var ondevicemotion_event = {};
   var onmousemove_event = {};
@@ -29,12 +30,19 @@
     }
   }
   
+  socket.on('connect', function() {
+    interval = setInterval(transmitdata,15);
+  });
+  socket.on('disconnect', function() {
+    clearInterval(interval);
+  });
+  
   socket.on('handshake', function (data) {
     playerNumber = parseInt(tokens[tokens.length-1]);
     $("#playerNum").text(playerNumber);
   });
   
-  setInterval(transmitdata,15);
+  
 
   window.ondevicemotion = function(event) {  
     ondevicemotion_event = event;

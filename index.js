@@ -10,6 +10,8 @@ app.actions = {};
 app.beginMsg = {};
 // How many players have connected
 app.connectedPlayers = 0;
+app.roomNumber = 0;
+app.playerSockets = new Array();
 
 function parsnip() {
   app.configure(function() {
@@ -36,6 +38,19 @@ function parsnip() {
     res.render('mousetest');
   });
   
+  app.get('/mouse', function(req, res) {
+    app.roomNumber++;
+    res.render('mousetest');
+  });
+  
+  app.get('/mouse/:room', function(req, res) {
+    res.render('mousetest');
+  });
+  
+  app.get('/m/mouse/:room/:num', function(req, res) {
+    res.render('mousetest_mobile');
+  });
+  
   app.get('/m/:num', function(req, res) {
     console.log("player " + req.params.num + "connected");
     res.render('mousetest_mobile');
@@ -57,8 +72,28 @@ function parsnip() {
     app.io.sockets.on('connection', function(socket) {
       app.connectedPlayers++;
       
-      //Run things when connect
-      socket.emit('handshake', { hello: "world" });
+      socket.on('handshake', function (data){
+        // This should actually check whether or not the room is valid, but whatever.
+        if (data.page === "lobby") {
+          if (data.game === "pong") {
+            playerSockets[data.room] = new Array();
+            socket.emit('handshake', { numberControllers: 2 });
+          }
+        } else if (data.page === "mobile") {
+          if (playerSockets[data.room][data.playerNumber] !== undefined) {
+            playerSockets[data.room][data.playerNumber].disconnect();
+          }
+          playerSockets[data.room][data.playerNumber] = socket;
+          
+        } else if (data.page === "screen") {
+          //
+        }
+        
+      });
+      
+      socket.on('requestroom', function (data){
+        socket.emit('assignroom', { room: app.roomNumber })
+      });
       
       socket.on('controller', function(data){
         //console.log(data);
