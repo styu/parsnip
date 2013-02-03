@@ -36,7 +36,8 @@ function parsnip() {
     res.render('mousetest');
   });
   
-  app.get('/m/mouse', function(req, res) {
+  app.get('/m/mouse/:num', function(req, res) {
+    console.log("player " + req.params.num + "connected");
     res.render('mousetest_mobile');
   });
   
@@ -49,10 +50,10 @@ function parsnip() {
       app.connectedPlayers++;
       
       //Run things when connect
-      socket.emit('handshake', { playerNumber: app.connectedPlayers });
+      socket.emit('handshake', { hello: "world" });
       
       socket.on('controller', function(data){
-        console.log(data);
+        //console.log(data);
         socket.broadcast.emit('controls', data);
       });
       

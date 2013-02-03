@@ -3,7 +3,8 @@
 <script>
   var socket = io.connect('http://localhost');
   var timeStamp = (new Date()).getTime();
-  var playerNumber = -1;
+  var tokens = document.URL.split("/");
+  var playerNumber = parseInt(tokens[tokens.length-1]);
   
   var ondevicemotion_event = {};
   var onmousemove_event = {};
@@ -32,7 +33,6 @@
   }
   
   socket.on('handshake', function (data) {
-    playerNumber = data["playerNumber"];
     $("#playerNum").text(playerNumber);
   });
   
@@ -48,4 +48,4 @@
 
 </script>
 
-You are player number <div id="playerNum"></div>
+You are player number <span id="playerNum"></span>
