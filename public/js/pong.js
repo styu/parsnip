@@ -14,40 +14,40 @@ function Game(players, ball) {
 }
 
 Game.prototype.makeMove = function(values) {
-  for (var i = 0; i < players.length; i++) {
+  for (var i = 0; i < this.players.length; i++) {
     if (i < 2) {
-      this.player[i].movePaddleY(values[i]);
+      this.players[i].movePaddleY(values[i]);
     } else {
-      this.player[i].movePaddleX(values[i]);
+      this.players[i].movePaddleX(values[i]);
     }
   }
   this.ball.moveBall();
 }
 
 Game.prototype.checkForCollisionY = function() {
-  if (this.player1.isTouchingY(this.ball)) {
+  if (this.players[0].isTouchingY(this.ball)) {
     if (this.ball.speedX < 0) {
       this.ball.speedX *= -1;
-      this.ball.speedY = calculateAngleY(this.player1, this.ball);
+      this.ball.speedY = calculateAngleY(this.players[0], this.ball);
     }
-  } else if (this.player2.isTouchingY(this.ball)) {
+  } else if (this.players[1].isTouchingY(this.ball)) {
     if (this.ball.speedX > 0) {
       this.ball.speedX *= -1;
-      this.ball.speedY = calculateAngleY(this.player2, this.ball);
+      this.ball.speedY = calculateAngleY(this.players[1], this.ball);
     }
   }
 }
 
 Game.prototype.checkForCollisionX = function() {
-  if (this.player3.isTouchingX(this.ball)) {
+  if (this.players[2].isTouchingX(this.ball)) {
     if (this.ball.speedY < 0) {
       this.ball.speedY *= -1;
-      this.ball.speedX = calculateAngleX(this.player3, this.ball);
+      this.ball.speedX = calculateAngleX(this.players[2], this.ball);
     }
-  } else if (this.player4.isTouchingX(this.ball)) {
+  } else if (this.players[3].isTouchingX(this.ball)) {
     if (this.ball.speedY > 0) {
       this.ball.speedY *= -1;
-      this.ball.speedX = calculateAngleX(this.player4, this.ball);
+      this.ball.speedX = calculateAngleX(this.players[3], this.ball);
     }
   }
 }
@@ -186,13 +186,29 @@ var values = new Array(),
 		
 socket.on('controls', function (data) {
   if (data["playerNumber"] === 1) {
-    values[0] = h * ((data["agY"] + 5) / 10);
+    if (data["mouseY"] !== undefined) {
+      values[0] = data["mouseY"];
+    } else {
+      values[0] = h * ((data["agY"] + 5) / 10);
+    }
   } else if (data["playerNumber"] === 2) {
-    values[1] = h * ((data["agY"] + 5) / 10);
+    if (data["mouseY"] !== undefined) {
+      values[1] = data["mouseY"];
+    } else {
+      values[1] = h * ((data["agY"] + 5) / 10);
+    }
   } else if (data["playerNumber"] === 3) {
-    values[2] = w * ((data["agX"] + 5) / 10);
+    if (data["mouseX"] !== undefined) {
+      values[2] = data["mouseX"];
+    } else {
+      values[2] = h * ((data["agX"] + 5) / 10);
+    }
   } else if (data["playerNumber"] === 4) {
-    values[3] = w * ((data["agX"] + 5) / 10);
+    if (data["mouseX"] !== undefined) {
+      values[3] = data["mouseX"];
+    } else {
+      values[3] = h * ((data["agX"] + 5) / 10);
+    }
   }
 });
 
