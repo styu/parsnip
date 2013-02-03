@@ -1,4 +1,6 @@
 <script src="/socket.io/socket.io.js"></script>
+<script src="js/jquery-1.9.0.min.js"></script>
+<script src="js/util.js"></script>
 <script>
   var socket = io.connect('http://localhost');
   
@@ -9,4 +11,14 @@
 </script>
 
 gamepagegoeshere
+
+Testing qr code
+<div id="qr_code">
+</div>
+
+<script>
+  util_generate_qr_code("www.google.com");
+</script>
+
+
 <a href='pong'>Let's play pong</a>
