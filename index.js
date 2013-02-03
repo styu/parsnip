@@ -23,9 +23,9 @@ function parsnip() {
     app.set('view engine', 'html');
   });
   
-  //app.get('/', function(req, res) {
-  //  res.render('index');
-  //});
+  app.get('/', function(req, res) {
+    res.render('index');
+  });
   
   app.get('/m/:room/:num', function(req, res) {
     res.render('mobile');
@@ -54,7 +54,7 @@ function parsnip() {
         if (data.page === "lobby") {
           var numPlayers = 0;
           if (data.game === "pong") {
-            numPlayers = 2;
+            numPlayers = 4;
           } else {
             numPlayers = 1;
           }

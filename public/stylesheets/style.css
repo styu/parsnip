@@ -16,22 +16,22 @@ div#title {
   display:block;
   margin-left:auto;
   margin-right:auto;
-  margin-top:10px;
   margin-bottom:40px;
   text-align:center;
   color:#c6c6a4;
 }
 
-div#qr_codes_container {
+div.qr_codes_container {
   position: relative;
   width:900px;
   margin-left:auto;
   margin-right:auto;
   text-align: center;
+  margin-bottom:10px;
 }
 h2{
   font-family: 'Open Sans',sans-serif;
-  margin-top: 80px;
+  margin-top: 20px;
   
   text-shadow: 0px -1px 2px #000000;
         filter: dropshadow(color=#000000, offx=0, offy=1);
@@ -59,7 +59,15 @@ div#qr_code2 {
   display: inline-block;
   margin-left: 120px;
 }
-
+div#qr_code3 {
+  position: relative;
+  display: inline-block;
+}
+div#qr_code4 {
+  position: relative;
+  display: inline-block;
+  margin-left: 120px;
+}
 div.player {
   margin-top:10px;
   text-align:center;
