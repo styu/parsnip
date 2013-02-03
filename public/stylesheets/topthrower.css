@@ -1,0 +1,93 @@
+#grass1{
+  background-image: url('../images/topthrower/grass1.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+#grass2{
+  background-image: url('../images/topthrower/grass2.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9;
+}
+#grass3{
+  background-image: url('../images/topthrower/grass3.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 8;
+}
+#sky1{
+  background-image: url('../images/topthrower/sky1.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 7;
+}
+#sky2{
+  background-image: url('../images/topthrower/sky2.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 6;
+}
+#sky3{
+  background-image: url('../images/topthrower/sky3.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 4;
+}
+#sky4{
+  background-image: url('../images/topthrower/sky4.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+#sky5{
+  background-image: url('../images/topthrower/sky5.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+#cloud1{
+  background-image: url('../images/topthrower/cloud1.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 12;
+}
+#cloud2{
+  background-image: url('../images/topthrower/cloud2.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 13;
+}
+body{
+  background-color: #000000;
+}

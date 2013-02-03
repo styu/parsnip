@@ -1,0 +1,132 @@
+<link rel="stylesheet" href="/stylesheets/reset.css">
+<link rel="stylesheet" href="/stylesheets/topthrower.css">
+<script src="/socket.io/socket.io.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script type='text/javascript'>
+  $(document).ready(function(){
+    refit = function(){
+      h = $(document).height();
+      w = $(document).width();
+      
+      grass1w = w;
+      grass1h = w*0.3;
+      grass1t = h-grass1h;
+      $("#grass1").css({width:grass1w});
+      $("#grass1").css({height:grass1h});
+      $("#grass1").css({top:grass1t});
+      
+      grass2w = w;
+      grass2h = w*0.3;
+      grass2t = h-grass2h-60;
+      $("#grass2").css({width:grass2w});
+      $("#grass2").css({height:grass2h});
+      $("#grass2").css({top:grass2t});
+      
+      grass3w = w;
+      grass3h = w*0.3;
+      grass3t = h-grass3h-100;
+      $("#grass3").css({width:grass3w});
+      $("#grass3").css({height:grass3h});
+      $("#grass3").css({top:grass3t});
+      
+      sky1w = w;
+      sky1h = w*0.8;
+      sky1t = h-sky1h-100;
+      $("#sky1").css({width:sky1w});
+      $("#sky1").css({height:sky1h});
+      $("#sky1").css({top:sky1t});
+      
+      sky2w = w;
+      sky2h = w*0.8;
+      sky2t = h-sky2h-150;
+      $("#sky2").css({width:sky2w});
+      $("#sky2").css({height:sky2h});
+      $("#sky2").css({top:sky2t});
+      
+      sky3w = w;
+      sky3h = w*0.8;
+      sky3t = h-sky3h-200;
+      $("#sky3").css({width:sky3w});
+      $("#sky3").css({height:sky3h});
+      $("#sky3").css({top:sky3t});
+      
+      sky4w = w;
+      sky4h = w*0.8;
+      sky4t = h-sky4h-250;
+      $("#sky4").css({width:sky4w});
+      $("#sky4").css({height:sky4h});
+      $("#sky4").css({top:sky4t});
+      
+      sky5w = w;
+      sky5h = w*0.8;
+      sky5t = h-sky5h-300;
+      $("#sky5").css({width:sky5w});
+      $("#sky5").css({height:sky5h});
+      $("#sky5").css({top:sky5t});
+      
+      cloud1w = w;
+      cloud1h = w*0.2;
+      cloud1t = sky4t;
+      $("#cloud1").css({width:cloud1w});
+      $("#cloud1").css({height:cloud1h});
+      $("#cloud1").css({top:cloud1t});
+      
+      cloud2w = w;
+      cloud2h = w*0.2;
+      cloud2t = sky5t;
+      $("#cloud2").css({width:cloud2w});
+      $("#cloud2").css({height:cloud2h});
+      $("#cloud2").css({top:cloud2t});
+    }
+    $(window).resize(function() {
+      refit();
+    });
+    refit();
+    var i = 22;
+    
+    function move(){
+      if (i > -22){
+        val = parseFloat($("#grass1").css("top"));
+        $("#grass1").css({top:(val+2.5*i)});
+        
+        val = parseFloat($("#grass2").css("top"));
+        $("#grass2").css({top:(val+1.9*i)});
+        
+        val = parseFloat($("#grass3").css("top"));
+        $("#grass3").css({top:(val+1.3*i)});
+        
+        val = parseFloat($("#sky1").css("top"));
+        $("#sky1").css({top:(val+1*i)});
+        
+        val = parseFloat($("#sky2").css("top"));
+        $("#sky2").css({top:(val+0.8*i)});
+        
+        val = parseFloat($("#sky3").css("top"));
+        $("#sky3").css({top:(val+0.6*i)});
+        
+        val = parseFloat($("#sky4").css("top"));
+        $("#sky4").css({top:(val+0.5*i)});
+        
+        val = parseFloat($("#cloud1").css("top"));
+        $("#cloud1").css({top:(val+0.55*i)});
+        
+        val = parseFloat($("#cloud2").css("top"));
+        $("#cloud2").css({top:(val+0.4*i)});
+        
+        
+        i -= 0.3;
+      }
+    }
+    setInterval(move,10);
+  });
+</script>
+<div id="grass1"></div>
+<div id="grass2"></div>
+<div id="grass3"></div>
+<div id="sky1"></div>
+<div id="sky2"></div>
+<div id="sky3"></div>
+<div id="sky4"></div>
+<div id="sky5"></div>
+<div id="cloud1"></div>
+<div id="cloud2"></div>

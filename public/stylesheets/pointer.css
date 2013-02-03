@@ -7,3 +7,21 @@
   left: 50%;
   top: 50%;
 }
+
+#footer{
+  position: fixed;
+  bottom: 20px;
+  text-align: center;
+  width: 100%;
+  color: #cccccc;
+  font-weight: 500;
+  font-family: Arial, sans-serif;
+}
+.dot{
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  background-color: #cccccc;
+  margin: 2px;
+}
