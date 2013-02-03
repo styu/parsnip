@@ -41,7 +41,10 @@
                       timeStamp: event.timeStamp,
                       accelX: event.acceleration.x,
                       accelY: event.acceleration.y,
-                      accelZ: event.acceleration.z });
+                      accelZ: event.acceleration.z,
+                      agX: event.accelerationIncludingGravity.x,
+                      agY: event.accelerationIncludingGravity.y,
+                      agZ: event.accelerationIncludingGravity.z });
       lastSentTimeStamp = event.timeStamp;
     }
   }

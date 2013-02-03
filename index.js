@@ -27,50 +27,15 @@ function parsnip() {
   //  res.render('index');
   //});
   
-  app.get('/pong', function(req, res) {
-    res.render('pong');
+  app.get('/m/:room/:num', function(req, res) {
+    res.render('mobile');
   });
   
-  //app.get('/m', function(req, res) {
-  //  res.render('mobile');
-  //});
-  
-  app.get('/', function(req, res) {
-    res.render('mousetest');
+  app.get('/:game/:room', function(req, res) {
+    res.render(req.params.game);
   });
-  
-  app.get('/mouse', function(req, res) {
-    app.roomNumber++;
-    res.render('mousetest_requestroom');
-  });
-  
-  app.get('/mouse/lobby/:room', function(req, res) {
-    res.render('mousetest_lobby');
-  });
-  
-  app.get('/mouse/:room', function(req, res) {
-    res.render('mousetest');
-  });
-  
-  app.get('/m/mouse/:room/:num', function(req, res) {
-    res.render('mousetest_mobile');
-  });
-  
-  app.get('/m/:num', function(req, res) {
-    console.log("player " + req.params.num + "connected");
-    res.render('mousetest_mobile');
-  });
-  
-  app.get('/qr', function(req, res) {
-    res.render('qrtest');
-  });
-  
-  app.get('/pointer', function(req, res) {
-    res.render('pointer');
-  });
-  
-  app.get('/topthrower', function(req, res) {
-    res.render('topthrower');
+  app.get('/:game', function(req, res) {
+    res.render('lobby');
   });
   
   var express_listen = app.listen;
@@ -90,22 +55,24 @@ function parsnip() {
           var numPlayers = 0;
           if (data.game === "pong") {
             numPlayers = 2;
-          } else if (data.game === "mouse") {
+          } else {
             numPlayers = 1;
           }
           
-          playerSockets[data.room] = new Array();
-          roomData[data.room] = { socket: socket, game: data.game, numPlayers: numPlayers };
+          app.roomNumber++;
+          
+          playerSockets[app.roomNumber] = new Array();
+          roomData[app.roomNumber] = { socket: socket, game: data.game, numPlayers: numPlayers };
           console.log(roomData);
-          socket.join("room" + data.room);
-          socket.emit('handshake', { numberControllers: numPlayers });
+          socket.join("room" + app.roomNumber);
+          socket.emit('handshake', { room: app.roomNumber, numberControllers: numPlayers });
         } else if (data.page === "mobile") {
           if (roomData[data.room] !== undefined) {
             if (playerSockets[data.room][data.playerNumber] !== undefined) {
               playerSockets[data.room][data.playerNumber].disconnect();
             }
             playerSockets[data.room][data.playerNumber] = socket;
-            socket.join("room" + data.room);
+            socket.join(data.game + data.room);
             socket.emit('handshake', { hello: "world" });
             
             socket.on('controller', (function(num) {
@@ -122,7 +89,7 @@ function parsnip() {
               }
             }
             if (allConnected) {
-              roomData[data.room].socket.emit('playersready', { hello: "world" });
+              roomData[data.room].socket.emit('playersready', { game: roomData[data.room].game, room: data.room });
             }
           } else {
             socket.disconnect();
@@ -146,11 +113,6 @@ function parsnip() {
             socket.disconnect();
           }
         }
-        
-      });
-      
-      socket.on('requestroom', function (data){
-        socket.emit('assignroom', { room: app.roomNumber })
       });
       
     });

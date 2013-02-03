@@ -16,13 +16,12 @@
   <script>
     var socket = io.connect(window.location.origin);
     var tokens = document.URL.split("/");
-    var room = -1;
+    var game = tokens[tokens.length-1];
     
     // Upon connecting, the lobby needs to handshake the server and tell it what
     // room it is in, and what game it is requesting.
     socket.on('connect', function() {
-      room = parseInt(tokens[tokens.length-1]);
-      socket.emit('handshake', { page: "lobby", game: "mouse", room: room });
+      socket.emit('handshake', { page: "lobby", game: game });
     });
     
     // Upon receiving the handshake, the lobby will receive data on how many
@@ -32,9 +31,9 @@
     socket.on('handshake', function (data) {
       for (var i = 1; i <= data.numberControllers; i++) {
         jQuery("<div id=\"qr_code" + i + "\" class=\"qr_code\"></div>").appendTo("#qr_codes_container");
-        util_generate_qr_code(window.location.origin + "/m/mouse/" + room + "/" + i).appendTo("#qr_code" + i);
-        jQuery("<div class=\"player\">Player " + i + "</div>").appendTo("#qr_code" + i);
-
+        util_generate_qr_code(window.location.origin + "/m/" + data.room + "/" + i).appendTo("#qr_code" + i);
+        jQuery("<div class=\"player\">Player " + i + " (" + window.location.origin + "/m/" + data.room
+               + "/" + i + ")</div>").appendTo("#qr_code" + i);
       }
     });
     
@@ -42,7 +41,11 @@
     // the controllers have connected. It will then need to redirect to the actual
     // game.
     socket.on('playersready', function(data) {
-      window.location = window.location.origin + "/mouse/" + room;
+      window.location = window.location.origin + "/" + data.game + "/" + data.room;
+    });
+    
+    socket.on('disconnect', function() {
+      $("#qr_codes_container").html("");
     });
     
   </script>
