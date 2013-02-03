@@ -41,10 +41,18 @@
           container = $("#container2");
         }
         
+        if (data.game === "nyan") {
+          i = 0;
+        }
+        
         $("<div id=\"qr_code" + i + "\" class=\"qr_code\"></div>").appendTo(container);
         util_generate_qr_code(window.location.origin + "/m/" + data.room + "/" + i).appendTo("#qr_code" + i);
         $("<div class=\"player\"><h3>Player " + i + "</h3><h4> " + window.location.origin + "/m/" + data.room
                + "/" + i + "</h4></div>").appendTo("#qr_code" + i);
+        
+        if (data.game === "nyan") {
+          i = 1;
+        }
       }
     });
     
@@ -52,7 +60,11 @@
     // the controllers have connected. It will then need to redirect to the actual
     // game.
     socket.on('playersready', function(data) {
-      window.location = window.location.origin + "/" + data.game + "/" + data.room;
+      if (data.game === "nyan") {
+        // Do nothing
+      } else {
+        window.location = window.location.origin + "/" + data.game + "/" + data.room;
+      }
     });
     
     socket.on('disconnect', function() {
