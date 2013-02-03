@@ -1,24 +1,20 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="js/jquery-1.9.0.min.js"></script>
 <script src="js/util.js"></script>
-<script>
-  var socket = io.connect(window.location.origin);
-  
-  socket.on('controls', function (data) {
-    console.log(data);
-    $("#hello").text(data["accelX"]);
-  });
-  
-</script>
 
-Testing qr code
 <div id="qr_code">
 </div>
 
 <script>
-  util_generate_qr_code("http://18.189.75.119:8080/m/1");
+  var socket = io.connect(window.location.origin);
+  
+  socket.on('roomassignment', function(data) {
+    console.log(data);
+    var room = data["room"];    
+    var img1 = util_generate_qr_code("http://18.189.75.119:8080/m/" + room + "/1");  
+    var img2 = util_generate_qr_code("http://18.189.75.119:8080/m/" + room + "/2");
+    img1.appendTo("#qr_code");
+    img2.appendTo("#qr_code");
+  }
 </script>
 
-
-<a href='pong'>Let's play pong</a>
-<div id="hello"></div>
