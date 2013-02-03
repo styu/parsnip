@@ -53,9 +53,13 @@ function parsnip() {
         // This should actually check whether or not the room is valid, but whatever.
         if (data.page === "lobby") {
           var numPlayers = 0;
-          if (data.game === "pong") {
+          if (data.game === "pong4") {
             numPlayers = 4;
-          } else {
+          } 
+          else if (data.game === "pong") {
+            numPlayers = 2;
+          }
+          else {
             numPlayers = 1;
           }
           
