@@ -40,6 +40,7 @@
         else {
           container = $("#container2");
         }
+        
         $("<div id=\"qr_code" + i + "\" class=\"qr_code\"></div>").appendTo(container);
         util_generate_qr_code(window.location.origin + "/m/" + data.room + "/" + i).appendTo("#qr_code" + i);
         $("<div class=\"player\"><h3>Player " + i + "</h3><h4> " + window.location.origin + "/m/" + data.room
@@ -55,7 +56,8 @@
     });
     
     socket.on('disconnect', function() {
-      $("#qr_codes_container").html("");
+      $("#container1").html("");
+      $("#container2").html("");
     });
     
   </script>

@@ -69,21 +69,38 @@ function parsnip() {
           roomData[app.roomNumber] = { socket: socket, game: data.game, numPlayers: numPlayers };
           console.log(roomData);
           socket.join("room" + app.roomNumber);
-          socket.emit('handshake', { room: app.roomNumber, numberControllers: numPlayers });
+          socket.emit('handshake', { game: data.game, room: app.roomNumber, numberControllers: numPlayers });
         } else if (data.page === "mobile") {
           if (roomData[data.room] !== undefined) {
             if (playerSockets[data.room][data.playerNumber] !== undefined) {
               playerSockets[data.room][data.playerNumber].disconnect();
             }
+            
+            if (data.playerNumber === 0) {
+              for (var i = 1; i < 100; i++) {
+                if (playerSockets[data.room][i] === undefined) {
+                  data.playerNumber = i;
+                  break;
+                }
+              }
+            }
+            
             playerSockets[data.room][data.playerNumber] = socket;
             socket.join(data.game + data.room);
-            socket.emit('handshake', { hello: "world" });
+            socket.emit('handshake', { room: data.room, playerNumber: data.playerNumber });
             
             socket.on('controller', (function(num) {
               return function(data){
                 app.roomData[num].socket.emit('controls', data);
               };
             })(data.room));
+            
+            socket.on('disconnect', (function(num, pn) {
+              return function() {
+                playerSockets[data.room][data.playerNumber] = undefined;
+                app.roomData[num].socket.emit('lostplayer', { playerNumber: pn });
+              };
+            })(data.room, data.playerNumber));
             
             var allConnected = true;
             for (var i = 1; i <= roomData[data.room].numPlayers; ++i) {

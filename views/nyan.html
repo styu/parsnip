@@ -1,0 +1,66 @@
+<link rel="stylesheet" href="/stylesheets/pointer.css">
+<script src="/socket.io/socket.io.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script type='text/javascript'>
+	var tokens = document.URL.split("/");
+  var room = parseInt(tokens[tokens.length-1]);
+  var socket = io.connect(window.location.origin);
+	
+	var finalY = new Array();
+  var finalX = new Array();
+	var currentX = new Array();
+	var currentY = new Array();
+	var connected = new Array();
+  
+	socket.on('connect', function() {
+    socket.emit('handshake', { room: room, page: "screen" });
+		connected[0] = false;
+  });
+	
+  $(document).ready(function(){
+    h = $(document).height();
+    w = $(document).width();
+  });
+	
+	socket.on('handshake', function (data) {
+		setInterval(move,33);
+	});
+  
+  function move(){
+		for (var i = 1; i < connected.length; ++i) {
+			if (connected[i]) {
+				currentX[i] = currentX[i] + (finalX[i]-currentX[i])/10;
+				currentY[i] = currentY[i] + (finalY[i]-currentY[i])/10;
+				$("#pointer" + i).css({left: currentX[i] + 'px', top: currentY[i] + 'px',});
+			}
+		}
+  }
+  socket.on('controls', function (data) {
+		var i = data.playerNumber;
+		if (connected[i] === undefined || !connected[i]) {
+			connected[i] = true;
+			currentX[i] = w/2.0;
+			currentY[i] = h/2.0;
+			$('body').append($("<div id='pointer" + i + "'>"));
+			$("#pointer" + i).css({left: currentX[i] + 'px', top: currentY[i] + 'px',
+														width: '200px', height:'140px', 'background-image': 'url("/images/nyancat.gif")',
+														display: 'block', position: 'fixed', 'background-size': '100%'});
+		}
+		if (data.agY !== undefined) {
+			finalY[i] = h*((data["agY"]+5)/10);
+			finalX[i] = w*((data["agX"]+5)/10);
+		} else if (data.mouseX !== undefined) {
+			finalY[i] = data.mouseY;
+			finalX[i] = data.mouseX;
+		}
+  });
+	socket.on('lostplayer', function (data) {
+		var i = data.playerNumber;
+		connected[i] = false;
+		$("#pointer" + i).remove();
+	});
+  
+</script>
+	<div id="footer">
+		powered by parsnip <span class='dot'></span> made for hackMIT
+	</div>

@@ -21,6 +21,8 @@
   
   socket.on('handshake', function (data) {
     transmitting = true;
+    playerNumber = data.playerNumber;
+    room = data.room;
     $("#playerNum").text(playerNumber);
   });
   
