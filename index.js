@@ -20,6 +20,10 @@ function parsnip() {
   app.get('/', function(req, res) {
     res.render('index');
   });
+  app.get('/m', function(req, res) {
+    res.render('mobile');
+  });
+  
   var express_listen = app.listen;
   app.listen = function(port, callback) {
     var server = express_listen.call(app, port, callback);
