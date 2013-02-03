@@ -44,6 +44,11 @@ function parsnip() {
   app.get('/qr', function(req, res) {
     res.render('qrtest');
   });
+  
+  app.get('/pointer', function(req, res) {
+    res.render('pointer');
+  });
+  
   var express_listen = app.listen;
   
   app.listen = function(port, callback) {
