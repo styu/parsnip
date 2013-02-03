@@ -128,15 +128,22 @@ var y1 = 0, y2 = 0,
     pingpongball,
     game;
 
+	var tokens = document.URL.split("/");
+  var room = parseInt(tokens[tokens.length-1]);
+	
+	socket.on('connect', function() {
+    socket.emit('handshake', { room: room, page: "screen" });
+  });
+		
 socket.on('controls', function (data) {
   //console.log(data);
   if (data["playerNumber"] === 1) {
-    y1 = data["mouseY"];
+    y1 = data["agY"];
     if (!player1.calibrated) {
       player1.calibrate(y1);
     }
   } else if (data["playerNumber"] === 2) {
-    y2 = data["mouseY"];
+    y2 = data["agY"];
     if (!player2.calibrated) {
       player2.calibrate(y2);
     }
