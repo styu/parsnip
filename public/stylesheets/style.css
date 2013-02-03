@@ -5,3 +5,31 @@ body {
 a {
   color: #00b7ff;
 }
+
+div#title {
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:10px;
+  margin-bottom:10px;
+  text-align:center;
+}
+
+div#qr_codes_container {
+  width:900px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+div#qr_code1 {
+  float:left;
+}
+
+div#qr_code2 {
+  float:right;
+}
+
+div.player {
+  text-align:center;
+  font-weight:bold;
+}
