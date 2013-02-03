@@ -17,12 +17,15 @@ function parsnip() {
     app.set('views', Path.join(__dirname, 'views'));
     app.set('view engine', 'html');
   });
+  
   app.get('/', function(req, res) {
     res.render('index');
   });
+  
   app.get('/pong', function(req, res) {
     res.render('pong');
   });
+  
   app.get('/m', function(req, res) {
     res.render('mobile');
   });
@@ -38,7 +41,7 @@ function parsnip() {
       
       socket.on('controller', function(data){
         console.log(data);
-        socket.broadcast.emit('controls', {packetno:data['packetno']});
+        socket.broadcast.emit('controls', data);
       });
       
     });

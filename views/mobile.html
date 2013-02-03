@@ -2,9 +2,15 @@
 <script>
   var socket = io.connect('http://localhost');
   var packetno = 0;
+  var accelX = 0;
+  var accelY = 0;
+  var accelZ = 0;
   
   transmitdata = function(){
-    socket.emit('controller', { packetno: packetno });
+    socket.emit('controller', { packetno: packetno,
+                                accelX: accelX,
+                                accelY: accelY,
+                                accelZ: accelZ});
     packetno ++;
   }
   
@@ -13,7 +19,14 @@
   });
   
   setInterval(transmitdata,10);
-  
+
+window.ondevicemotion = function(event) {  
+    accelX = event.accelerationIncludingGravity.x;  
+    accelY = event.accelerationIncludingGravity.y;  
+    accelZ = event.accelerationIncludingGravity.z;  
+}
+
 </script>
+
 
 This is the mobile view controller. BUILD A COOL UI HERE :D
