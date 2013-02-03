@@ -1,5 +1,7 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<link href='http://fonts.googleapis.com/css?family=Tenor+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800,600' rel='stylesheet' type='text/css'>
 <script>
   var socket = io.connect(window.location.origin);
   
@@ -60,5 +62,17 @@
   
 </script>
 
-Current airtime is <span id="airtime">0</span> ms.<br/>
-Best score is <span id="maxheight">0</span> m. <span id="pansy">Pansy.</span>
+<link href='http://fonts.googleapis.com/css?family=Tenor+Sans' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="/stylesheets/reset.css">
+<link rel="stylesheet" href="/stylesheets/skyhigh.css">
+
+<h3>Current airtime is <span id="airtime">0</span> ms.</h3>
+
+<div id="num">
+  <h2>Best score</h2>
+<span id="maxheight">0</span>m</div>
+<div id="pansy">Pansy.</div>
+
+<div id="footer">
+	powered by parsnip <span class='dot'></span> made for hackMIT
+</div>

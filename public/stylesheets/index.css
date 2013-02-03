@@ -1,0 +1,73 @@
+@font-face{
+font-family: governor;
+src: url('../fonts/governor.ttf');
+}
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background-image: url("../images/debut_dark.png");
+}
+h2{
+  font-family: 'open sans';
+  font-size: 30px;
+  text-align: center;
+  font-weight: 600;
+  margin-top: 20px;
+  color: #ffffff;
+  text-shadow: 1px 1px 1px #000;
+filter: dropshadow(color=#000, offx=1, offy=1);
+}
+#logo{
+  background-image: url("../images/parsniplogo.png");
+  width:430px;
+  height:128px;
+  display: block;
+  margin: 40px auto 0 auto;
+  
+}
+.codeforthought{
+  font-family: courier;
+  background-color: rgba(0,0,0,0.2);
+  width: 300px;
+  font-size: 20px;
+  padding: 10px;
+  color: #dddddd;
+  text-align: center;
+  margin: 40px auto;
+}
+#spiel{
+ font-size: 20px;
+ color: rgba(255,255,255,0.7);
+ margin-top: 10px;
+ text-align: center;
+ font-family: 'Open Sans',sans-serif;
+ line-height: 24px;
+}
+#demos{
+  margin-top: 20px;
+  text-align: center;
+}
+.demoitem{
+  display: inline-block;
+  background-color: #f1f3bf;
+  padding: 20px;
+  font-size: 20px;
+  font-family: 'governor','Open Sans',sans-serif;
+  margin: 0 10px 0 10px;
+  width: 140px;
+  border-radius: 5px;
+  -webkit-box-shadow:   1px 4px 1px rgba(0, 0, 0, 0.3);
+        
+        box-shadow:   1px 4px 1px rgba(0, 0, 0, 0.3);
+}
+h3{
+  color: #000000;
+ font-family: 'Open Sans',sans-serif;
+ text-align: center;
+ position: fixed;
+ bottom: 20px;
+ width: 100%;
+ font-weight: 600;
+ font-size: 20px;
+}
