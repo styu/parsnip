@@ -19,11 +19,15 @@ Player.prototype.movePaddle = function(yCoord) {
 
 
 var socket = io.connect(window.location.origin);
-var y = 0;
+var y1 = 0, y2 = 0;
 
 socket.on('controls', function (data) {
   console.log(data);
-  y = data["mouseY"];
+  if (data["playerNumber"] === 1) {
+    y1 = data["mouseY"];
+  } else if (data["playerNumber"] === 2) {
+    y2 = data["mouseY"];
+  }
 });
 //EaselJS Stage instance that wraps the Canvas element
 var stage;
@@ -31,15 +35,6 @@ var stage;
 //EaselJS Shape instance that we will animate
 var rectangle;
 var player;
-
-//radius of the paddle Graphics that we will draw.
-var PADDLE_WIDTH = 5;
-var PADDLE_HEIGHT = 25;
-
-//x position that we will reset Shape to when it goes off
-//screen
-var paddleXreset;
-var paddleYreset;
 
 //EaselJS Rectangle instance we will use to store the bounds
 //of the Canvas
@@ -62,55 +57,21 @@ function init()
 	//get a reference to the canvas element
 	var canvas = document.getElementById("gameBoard");
 
-	//copy the canvas bounds to the bounds instance.
-	//Note, if we resize the canvas, we need to reset
-	//these bounds.
-	bounds = new createjs.Rectangle();
-	bounds.width = canvas.width;
-	bounds.height = canvas.height;
-
 	//pass the canvas element to the EaselJS Stage instance
 	//The Stage class abstracts away the Canvas element and
 	//is the root level display container for display elements.
 	stage = new createjs.Stage(canvas);
 
-	//Create an EaselJS Graphics element to create the
-	//commands to draw a paddle
-	var g = new createjs.Graphics();
-
-	//stroke of 1 px
-	g.setStrokeStyle(1);
-
-	//Set the stroke color, using the EaselJS 
-	//Graphics.getRGB static method.
-	//This creates a white color
-	g.beginFill(createjs.Graphics.getRGB(255,255,255,1));
-
-	//draw the paddle
-	//g.drawCircle(0,0, CIRCLE_RADIUS);
-  g.rect(0, 0, PADDLE_WIDTH, PADDLE_HEIGHT);
-
-	//note that the paddle has not been drawn yet. 
-	//the Graphics instance just has the commands to
-	//draw the paddle.
-	//It will be drawn when the stage needs to render it
-	//which is usually when we call stage.tick()
-
-	//create a new Shape instance. This is a DisplayObject
-	//which can be added directly to the stage (and rendered).
-	//Pass in the Graphics instance that we created, and that
-	//we want the Shape to draw.
-	rectangle = new createjs.Shape(g);
-
-	//set the initial x position, and the reset position
-	rectangle.x = rectangleYReset = 0;
-
-	//set the y position
-	rectangle.y = canvas.height / 2;
-	player = new Player(rectangle);
+  var paddle1 = document.getElementById("player1"),
+      paddle2 = document.getElementById("player2"),
+      paddle1DOMElement = new createjs.DOMElement(paddle1),
+      paddle2DOMElement = new createjs.DOMElement(paddle2);
+	player1 = new Player(paddle1DOMElement);
+	player2 = new Player(paddle2DOMElement);
 
 	//add the paddle to the stage.
-	stage.addChild(rectangle);
+  stage.addChild(paddle1DOMElement);
+  stage.addChild(paddle2DOMElement);
 
 	//tell the stage to render to the canvas
 	stage.update();
@@ -126,6 +87,7 @@ function init()
 //function called by the Tick instance at a set interval
 function tick()
 {
-  player.movePaddle(y);
+  player1.movePaddle(y1);
+  player2.movePaddle(y2);
 	stage.update();
 }
