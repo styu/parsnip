@@ -41,6 +41,9 @@ function parsnip() {
     res.render('mousetest_mobile');
   });
   
+  app.get('/qr', function(req, res) {
+    res.render('qrtest');
+  });
   var express_listen = app.listen;
   
   app.listen = function(port, callback) {
