@@ -1,0 +1,30 @@
+<script src="/socket.io/socket.io.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script>
+  var socket = io.connect('http://localhost');
+  
+  socket.on('controls', function (data) {
+    if (data.playerNumber == 1) {
+      if (data.mouseX !== undefined) {
+        $("#x1").text(data["mouseX"]);
+        $("#y1").text(data["mouseY"]);
+      }
+    } else if (data.playerNumber == 2) {
+      if (data.mouseX !== undefined) {
+        $("#x2").text(data["mouseX"]);
+        $("#y2").text(data["mouseY"]);
+      }
+    }
+    
+  });
+  
+</script>
+
+Player 1 is at:
+<div id="x1"></div>
+<div id="y1"></div>
+<br/>
+Player 2 is at:
+<div id="x2"></div>
+<div id="y2"></div>
+<br/>

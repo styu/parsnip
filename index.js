@@ -8,6 +8,8 @@ app.games = {};
 app.socketToGame = {};
 app.actions = {};
 app.beginMsg = {};
+// How many players have connected
+app.connectedPlayers = 0;
 
 function parsnip() {
   app.configure(function() {
@@ -17,14 +19,26 @@ function parsnip() {
     app.set('views', Path.join(__dirname, 'views'));
     app.set('view engine', 'html');
   });
+  
   app.get('/', function(req, res) {
     res.render('index');
   });
+  
   app.get('/pong', function(req, res) {
     res.render('pong');
   });
+  
   app.get('/m', function(req, res) {
     res.render('mobile');
+  });
+  
+  app.get('/mouse', function(req, res) {
+    res.render('mousetest');
+  });
+  
+  app.get('/m/mouse/:num', function(req, res) {
+    console.log("player " + req.params.num + "connected");
+    res.render('mousetest_mobile');
   });
   
   var express_listen = app.listen;
@@ -33,12 +47,14 @@ function parsnip() {
     var server = express_listen.call(app, port, callback);
     app.io = SocketIO.listen(server);
     app.io.sockets.on('connection', function(socket) {
+      app.connectedPlayers++;
+      
       //Run things when connect
-      socket.emit('handshake', { hello: 'world' });
+      socket.emit('handshake', { hello: "world" });
       
       socket.on('controller', function(data){
-        console.log(data);
-        socket.broadcast.emit('controls', {packetno:data['packetno']});
+        //console.log(data);
+        socket.broadcast.emit('controls', data);
       });
       
     });
