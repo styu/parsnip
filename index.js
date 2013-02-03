@@ -25,15 +25,24 @@ function parsnip() {
   });
   
   var express_listen = app.listen;
+  
   app.listen = function(port, callback) {
     var server = express_listen.call(app, port, callback);
     app.io = SocketIO.listen(server);
     app.io.sockets.on('connection', function(socket) {
       //Run things when connect
+      socket.emit('handshake', { hello: 'world' });
+      
+      socket.on('controller', function(data){
+        console.log(data);
+        socket.broadcast.emit('controls', {packetno:data['packetno']});
+      });
+      
     });
     return server;
   }
   return app;
 }
+
 
 module.exports = parsnip;

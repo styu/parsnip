@@ -1,1 +1,19 @@
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io.connect('http://localhost');
+  var packetno = 0;
+  
+  transmitdata = function(){
+    socket.emit('controller', { packetno: packetno });
+    packetno ++;
+  }
+  
+  socket.on('handshake', function (data) {
+    console.log("connected to socket!");
+  });
+  
+  setInterval(transmitdata,10);
+  
+</script>
+
 This is the mobile view controller. BUILD A COOL UI HERE :D
