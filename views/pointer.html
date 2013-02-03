@@ -1,1 +1,30 @@
+<link rel="stylesheet" href="/stylesheets/pointer.css">
+<script src="/socket.io/socket.io.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script type='text/javascript'>
+  $(document).ready(function(){
+    h = $(document).height();
+    w = $(document).width();
+  });
+  var socket = io.connect(window.location.origin);
+  var finalY = 0;
+  var finalX = 0;
+  
+  function move(){
+      currentY = parseInt($("#pointer").css("top"));
+      currentX = parseInt($("#pointer").css("left"));
+      newX = currentX + (finalX-currentX)/3;
+      newY = currentY + (finalY-currentY)/3;
+      $("#pointer").css({left: newX + 'px', top: newY + 'px',});
+  }
+  socket.on('controls', function (data) {
+    if (data["playerNumber"] === 1) {
+      finalY = h*((data["accelY"]+5)/10);
+      finalX = w*((data["accelX"]+5)/10);
+      
+    }
+  });
+  setInterval(move,100);
+  
+</script>
 <div id="pointer"></div>

@@ -1,5 +1,9 @@
 #pointer{
-  width:276px;
-  height:374px;
-  background-image: url("finger.png");
+  width:100px;
+  height:129px;
+  background-image: url("../images/finger.png");
+  display: block;
+  position: fixed;
+  left: 50%;
+  top: 50%;
 }
