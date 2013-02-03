@@ -106,7 +106,6 @@ function parsnip() {
             
             socket.on('controller', (function(num) {
               return function(data){
-                console.log(data);
                 app.roomData[num].socket.emit('controls', data);
               };
             })(data.room));
