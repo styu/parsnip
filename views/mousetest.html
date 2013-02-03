@@ -8,11 +8,17 @@
       if (data.mouseX !== undefined) {
         $("#x1").text(data["mouseX"]);
         $("#y1").text(data["mouseY"]);
+      } else if (data.accelX !== undefined) {
+        $("#x1").text(data["accelX"]);
+        $("#y1").text(data["accelY"]);
       }
     } else if (data.playerNumber == 2) {
       if (data.mouseX !== undefined) {
         $("#x2").text(data["mouseX"]);
         $("#y2").text(data["mouseY"]);
+      } else if (data.accelX !== undefined) {
+        $("#x2").text(data["accelX"]);
+        $("#y2").text(data["accelY"]);
       }
     }
     
