@@ -1,13 +1,35 @@
 {
-  "name": "application-name",
+  "name": "parsnip",
   "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "start": "node app"
+  "description": "snip snip",
+  "keywords": [
+    "text",
+    "adventure",
+    "game"
+  ],
+  "contributors": [
+    "Victor Hung <vhung@mit.edu>",
+    "x"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/styu/parsnip.git"
+  },
+  "engines": {
+    "node": "0.8.16",
+    "npm": "1.1.59"
   },
   "dependencies": {
-    "express": "3.1.0",
-    "jade": "*",
-    "stylus": "*"
-  }
+    "express": "3.x",
+    "handlebars": "1.0.6",
+    "consolidate": "0.3.x",
+    "path": "0.4.9",
+    "socket.io": "0.9.13"
+  },
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "example/app.js"
+  },
+  "subdomain": "example.app.js"
 }
