@@ -69,6 +69,10 @@ function parsnip() {
     res.render('pointer');
   });
   
+  app.get('/topthrower', function(req, res) {
+    res.render('topthrower');
+  });
+  
   var express_listen = app.listen;
   
   app.listen = function(port, callback) {
