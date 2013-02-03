@@ -13,9 +13,8 @@ Player.prototype.calibrate = function(yCoord) {
   this.calibrated = true;
 };
 
-Player.prototype.movePaddle = function(yCoord1,yCoord2) {
-  this.paddle1.y = yCoord1;
-  this.paddle2.y = yCoord2;
+Player.prototype.movePaddle = function(yCoord) {
+  this.paddle.y = yCoord;
 }
 
 
@@ -24,11 +23,7 @@ var y = 0;
 
 socket.on('controls', function (data) {
   console.log(data);
-  if (data["playerNumber"] == "1"){
-	y1 = data["mouseY"];
-  } else if (data["playerNumber"] == "2"){
-	y2 = data["mouseY"];
-  }
+  y = data["mouseY"];
 });
 //EaselJS Stage instance that wraps the Canvas element
 var stage;
@@ -70,14 +65,12 @@ function init()
 	//is the root level display container for display elements.
 	stage = new createjs.Stage(canvas);
 
-  var paddle1 = document.getElementById("player1");
-  var paddle2 = document.getElementById("player2");
-  var paddle1DOMElement = new createjs.DOMElement(paddle1);
-  var paddle2DOMElement = new createjs.DOMElement(paddle2);
-	player = new Player(paddle1DOMElement);
+  var paddle = document.getElementById("player1");
+  var paddleDOMElement = new createjs.DOMElement(paddle);
+	player = new Player(paddleDOMElement);
 
 	//add the paddle to the stage.
-  stage.addChild(paddle1DOMElement);
+  stage.addChild(paddleDOMElement);
 
 	//tell the stage to render to the canvas
 	stage.update();
@@ -93,6 +86,6 @@ function init()
 //function called by the Tick instance at a set interval
 function tick()
 {
-  player.movePaddle(y1,y2);
+  player.movePaddle(y);
 	stage.update();
 }
