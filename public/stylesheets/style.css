@@ -1,6 +1,7 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-image: url("../images/debut_dark.png");
 }
 a {
   color: #00b7ff;
@@ -11,8 +12,9 @@ div#title {
   margin-left:auto;
   margin-right:auto;
   margin-top:10px;
-  margin-bottom:10px;
+  margin-bottom:40px;
   text-align:center;
+  color:#c6c6a4;
 }
 
 div#qr_codes_container {
@@ -30,6 +32,8 @@ div#qr_code2 {
 }
 
 div.player {
+  margin-top:10px;
   text-align:center;
   font-weight:bold;
+  color:#c6c6a4;
 }
