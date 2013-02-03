@@ -1,0 +1,37 @@
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/jquery-1.9.0.min.js"></script>
+<script src="/js/util.js"></script>
+
+<div id="qr_code">
+</div>
+
+<script>
+  var socket = io.connect(window.location.origin);
+  var tokens = document.URL.split("/");
+  var room = -1;
+  
+  // Upon connecting, the lobby needs to handshake the server and tell it what
+  // room it is in, and what game it is requesting.
+  socket.on('connect', function() {
+    room = parseInt(tokens[tokens.length-1]);
+    socket.emit('handshake', { page: "lobby", game: "pong", room: room });
+  });
+  
+  // Upon receiving the handshake, the lobby will receive data on how many
+  // players are in the requested game. It will need to generate QR codes based
+  // on the requested game (implementation-specific) which lead to the mobile
+  // sites.
+  socket.on('handshake', function (data) {
+    for (var i = 1; i <= data.numberControllers; i++) {
+      util_generate_qr_code(window.location.origin + "/m/mouse/" + room + "/" + i).appendTo("#qr_code");
+    }
+  });
+  
+  // The lobby will recieve the 'playersready' message once it detects that all
+  // the controllers have connected. It will then need to redirect to the actual
+  // game.
+  socket.on('playersready', function(data) {
+    window.location = window.location.origin + "/mouse/" + room;
+  });
+  
+</script>

@@ -1,7 +1,9 @@
   var socket = io.connect(window.location.origin);
   var timeStamp = (new Date()).getTime();
   var tokens = document.URL.split("/");
+  var room = -1;
   var playerNumber = -1;
+  var interval = -1;
   
   var ondevicemotion_event = {};
   var onmousemove_event = {};
@@ -29,12 +31,24 @@
     }
   }
   
-  socket.on('handshake', function (data) {
+  socket.on('connect', function() {
     playerNumber = parseInt(tokens[tokens.length-1]);
+    room = parseInt(tokens[tokens.length-2]);
+    socket.emit('handshake', { page: "mobile", room: room, playerNumber: playerNumber });
+    
+  });
+  socket.on('disconnect', function() {
+    if (interval !== -1) {
+      clearInterval(interval);
+    }
+  });
+  
+  socket.on('handshake', function (data) {
+    interval = setInterval(transmitdata,15);
     $("#playerNum").text(playerNumber);
   });
   
-  setInterval(transmitdata,15);
+  
 
   window.ondevicemotion = function(event) {  
     ondevicemotion_event = event;
