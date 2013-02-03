@@ -129,6 +129,16 @@ function parsnip() {
             roomData[data.room].socket = socket;
             socket.join("room" + data.room);
             socket.emit('handshake', { hello: "world" });
+            
+            socket.on('disconnect', (function(num) {
+              return function() {
+                for (var i = 1; i <= roomData[data.room].numPlayers; ++i) {
+                  if (playerSockets[data.room][i] !== undefined) {
+                    playerSockets[data.room][i].disconnect();
+                  }
+                }
+              };
+            })(data.room));
           } else {
             socket.disconnect();
           }

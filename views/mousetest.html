@@ -33,6 +33,10 @@
     socket.emit('handshake', { room: room, page: "screen" });
   });
   
+  socket.on('disconnect', function() {
+    window.location = window.location.origin + "/mouse";
+  });
+  
   socket.on('handshake', function (data) {
     // Start running the game after receiving the handshake
   });

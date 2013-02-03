@@ -23,9 +23,9 @@
         socket.emit('controller',
                     { playerNumber: playerNumber,
                       timeStamp: ondevicemotion_event.timeStamp,
-                      accelX: ondevicemotion_event.accelerationIncludingGravity.x,
-                      accelY: ondevicemotion_event.accelerationIncludingGravity.y,
-                      accelZ: ondevicemotion_event.accelerationIncludingGravity.z });
+                      accelX: ondevicemotion_event.acceleration.x,
+                      accelY: ondevicemotion_event.acceleration.y,
+                      accelZ: ondevicemotion_event.acceleration.z });
       }
       
       timeStamp = (new Date()).getTime();

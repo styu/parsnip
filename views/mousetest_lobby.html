@@ -22,7 +22,7 @@
     // room it is in, and what game it is requesting.
     socket.on('connect', function() {
       room = parseInt(tokens[tokens.length-1]);
-      socket.emit('handshake', { page: "lobby", game: "pong", room: room });
+      socket.emit('handshake', { page: "lobby", game: "mouse", room: room });
     });
     
     // Upon receiving the handshake, the lobby will receive data on how many
