@@ -1,6 +1,6 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
-  var socket = io.connect('http://localhost');
+  var socket = io.connect(window.location.origin);
   var packetno = 0;
   var accelX = 0;
   var accelY = 0;
@@ -18,13 +18,24 @@
     console.log("connected to socket!");
   });
   
-  setInterval(transmitdata,10);
+  setInterval(transmitdata,100);
 
 window.ondevicemotion = function(event) {  
     accelX = event.accelerationIncludingGravity.x;  
     accelY = event.accelerationIncludingGravity.y;  
     accelZ = event.accelerationIncludingGravity.z;
 }
+/*
+function onOrientation(event) {
+  accelX = 'rotate(' + event.gamma + 'deg)';
+  //scale = 'scale(' + ((event.beta/180)*2 + 1) + ')';
+}
+window.onOrientation = function(event) {
+  accelX = event.gamma;
+}
+
+//window.addEventListener('deviceorientation', onOrientation);
+*/
 
 </script>
 
