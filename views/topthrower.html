@@ -3,6 +3,13 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 <script type='text/javascript'>
+  var tokens = document.URL.split("/");
+  var room = parseInt(tokens[tokens.length-1]);
+	
+	socket.on('connect', function() {
+    socket.emit('handshake', { room: room, page: "screen" });
+  });
+  
   $(document).ready(function(){
     refit = function(){
       h = $(document).height();
