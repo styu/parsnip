@@ -8,6 +8,8 @@ app.games = {};
 app.socketToGame = {};
 app.actions = {};
 app.beginMsg = {};
+// How many players have connected
+app.connectedPlayers = 0;
 
 function parsnip() {
   app.configure(function() {
@@ -30,14 +32,24 @@ function parsnip() {
     res.render('mobile');
   });
   
+  app.get('/mouse', function(req, res) {
+    res.render('mousetest');
+  });
+  
+  app.get('/m/mouse', function(req, res) {
+    res.render('mousetest_mobile');
+  });
+  
   var express_listen = app.listen;
   
   app.listen = function(port, callback) {
     var server = express_listen.call(app, port, callback);
     app.io = SocketIO.listen(server);
     app.io.sockets.on('connection', function(socket) {
+      app.connectedPlayers++;
+      
       //Run things when connect
-      socket.emit('handshake', { hello: 'world' });
+      socket.emit('handshake', { playerNumber: app.connectedPlayers });
       
       socket.on('controller', function(data){
         console.log(data);

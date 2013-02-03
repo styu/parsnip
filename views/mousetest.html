@@ -1,0 +1,9 @@
+<script>
+  var socket = io.connect('http://localhost');
+  
+  socket.on('controls', function (data) {
+    console.log(data);
+    $("#hello").text(data["accelX"]);
+  });
+  
+</script>
