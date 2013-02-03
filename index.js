@@ -20,6 +20,9 @@ function parsnip() {
   app.get('/', function(req, res) {
     res.render('index');
   });
+  app.get('/pong', function(req, res) {
+    res.render('pong');
+  });
   app.get('/m', function(req, res) {
     res.render('mobile');
   });
