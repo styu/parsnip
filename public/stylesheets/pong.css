@@ -45,11 +45,11 @@ h2{  text-shadow: 0px 1px 1px #444444;
 }
 #player1{
   left: 20px;
-  top: -webkit-calc(50% - 60px);
+  /* top: -webkit-calc(50% - 60px); */
 }
 #player2{
   right: 20px;
-  top: -webkit-calc(50% - 60px);
+  /* top: -webkit-calc(50% - 60px); */
 }
 #ball{
   border-radius: 50%;
@@ -60,8 +60,9 @@ h2{  text-shadow: 0px 1px 1px #444444;
   height: 20px;
   background-color: rgba(255,255,255,0.9);
   position: fixed;
-  top: -webkit-calc(50% - 10px);
+  /* top: -webkit-calc(50% - 10px); */
   left: -webkit-calc(50% - 10px);
+  z-index: 20;
 }
 
 #footer{
