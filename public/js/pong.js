@@ -1,8 +1,25 @@
+/*
+ * Player class
+ */
+function Player(paddle) {
+  this.paddle = paddle;
+  this.middleY;
+  this.calibrated = false;
+  this.score = 0;
+}
+
+Player.prototype.calibrate = function(yCoord) { 
+  this.middleY = yCoord;
+  this.calibrated = true;
+};
+
+Player.prototype.movePaddle = function(yCoord) {
+  this.paddle.y = yCoord;
+}
+
+
 var socket = io.connect(window.location.origin);
 var y = 0;
-// game related code
-var first = false;
-var paddleStartY;
 
 socket.on('controls', function (data) {
   console.log(data);
@@ -13,6 +30,7 @@ var stage;
 
 //EaselJS Shape instance that we will animate
 var rectangle;
+var player;
 
 //radius of the paddle Graphics that we will draw.
 var PADDLE_WIDTH = 5;
@@ -89,6 +107,7 @@ function init()
 
 	//set the y position
 	rectangle.y = canvas.height / 2;
+	player = new Player(rectangle);
 
 	//add the paddle to the stage.
 	stage.addChild(rectangle);
@@ -107,16 +126,6 @@ function init()
 //function called by the Tick instance at a set interval
 function tick()
 {
-	//check and see if the Shape has gone of the right
-	//of the stage.
-	/*
-if (first) {
-	  paddleStartY = y;
-	  first = false;
-	} else {
-*/
-	  rectangle.y = y;
-  //}
-	//re-render the stage
+  player.movePaddle(y);
 	stage.update();
 }
