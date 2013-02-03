@@ -1,3 +1,7 @@
+@font-face{
+font-family: governor;
+src: url('../fonts/governor.ttf');
+}
 body, html {
   height: 100%;
   margin: 0;
@@ -6,14 +10,24 @@ body, html {
   background-image: url("../images/debut_dark.png");
 }
 #header{
+  margin-top: 20px;
+  position: fixed;
+  width: 100%;
 }
 h1{
-  color: #ffffff;
-  font-family: "Raleway", serif;
+  text-shadow: 0px 1px 2px #666666;
+        filter: dropshadow(color=#666666, offx=0, offy=1);
+  color: #111111;
+  font-family: "governor", sans serif;
   font-size: 100px;
   text-align: center;
 }
-h2{
+h2{  text-shadow: 0px 1px 1px #444444;
+        filter: dropshadow(color=#ffffff, offx=0, offy=1);
+  color: #161616;
+  font-family: "governor", sans serif;
+  font-size: 40px;
+  text-align: center;
   
 }
 .board {
