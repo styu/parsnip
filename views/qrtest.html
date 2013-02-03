@@ -8,13 +8,13 @@
 <script>
   var socket = io.connect(window.location.origin);
   
-  socket.on('roomassignment', function(data) {
+  socket.on('roomassignment', function(data){
     console.log(data);
     var room = data["room"];    
     var img1 = util_generate_qr_code("http://18.189.75.119:8080/m/" + room + "/1");  
     var img2 = util_generate_qr_code("http://18.189.75.119:8080/m/" + room + "/2");
     img1.appendTo("#qr_code");
     img2.appendTo("#qr_code");
-  }
+  });
 </script>
 
